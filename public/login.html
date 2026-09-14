@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dummy Bank - Log In</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header><div class="logo">DUMMY BANK</div></header>
+  <main>
+    <div class="card">
+      <h1>Welcome Back</h1>
+      <p class="subtitle">Log in with your registered mobile number.</p>
+
+      <form id="login-form">
+        <div class="field">
+          <label for="mobile">Mobile Number</label>
+          <input id="mobile" name="mobile" type="tel" placeholder="10-digit mobile number" maxlength="10" required />
+        </div>
+        <button type="submit" id="submit-btn">Log In</button>
+      </form>
+
+      <div id="message" class="message"></div>
+    </div>
+    <p class="footer-link">New here? <a href="index.html">Create an account</a></p>
+  </main>
+
+  <script>
+    const form = document.getElementById('login-form');
+    const messageEl = document.getElementById('message');
+    const submitBtn = document.getElementById('submit-btn');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      messageEl.className = 'message';
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Logging in...';
+
+      const payload = { mobile: document.getElementById('mobile').value.trim() };
+
+      try {
+        const res = await fetch('/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const data = await res.json();
+
+        if (!res.ok) {
+          messageEl.className = 'message error';
+          messageEl.textContent = data.error || 'Something went wrong.';
+        } else {
+          messageEl.className = 'message success';
+          messageEl.innerHTML = `Logged in successfully.<div class="account-details">
+            <strong>Name:</strong> ${data.account.name}<br/>
+            <strong>Mobile:</strong> ${data.account.mobile}<br/>
+            <strong>Email:</strong> ${data.account.email}
+          </div>`;
+        }
+      } catch (err) {
+        messageEl.className = 'message error';
+        messageEl.textContent = 'Could not reach the server.';
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Log In';
+      }
+    });
+  </script>
+</body>
+</html>

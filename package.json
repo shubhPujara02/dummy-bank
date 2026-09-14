@@ -1,0 +1,14 @@
+{
+  "name": "dummy-bank",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Dummy bank account creation + login test page for ConsentIQ integration testing",
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

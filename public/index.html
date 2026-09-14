@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dummy Bank - Open an Account</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header><div class="logo">DUMMY BANK</div></header>
+  <main>
+    <div class="card">
+      <h1>Let's Get Started</h1>
+      <p class="subtitle">Create your account to continue.</p>
+
+      <form id="signup-form">
+        <div class="field">
+          <label for="name">Full Name</label>
+          <input id="name" name="name" type="text" placeholder="Enter your full name" required />
+        </div>
+        <div class="field">
+          <label for="mobile">Mobile Number</label>
+          <input id="mobile" name="mobile" type="tel" placeholder="10-digit mobile number" maxlength="10" required />
+        </div>
+        <div class="field">
+          <label for="email">Email ID</label>
+          <input id="email" name="email" type="email" placeholder="Enter your email" required />
+        </div>
+        <button type="submit" id="submit-btn">Create Account</button>
+      </form>
+
+      <div id="message" class="message"></div>
+    </div>
+    <p class="footer-link">Already have an account? <a href="login.html">Log in</a></p>
+  </main>
+
+  <script>
+    const form = document.getElementById('signup-form');
+    const messageEl = document.getElementById('message');
+    const submitBtn = document.getElementById('submit-btn');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      messageEl.className = 'message';
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Creating...';
+
+      const payload = {
+        name: document.getElementById('name').value.trim(),
+        mobile: document.getElementById('mobile').value.trim(),
+        email: document.getElementById('email').value.trim(),
+      };
+
+      try {
+        const res = await fetch('/api/signup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const data = await res.json();
+
+        if (!res.ok) {
+          messageEl.className = 'message error';
+          messageEl.textContent = data.error || 'Something went wrong.';
+        } else {
+          messageEl.className = 'message success';
+          messageEl.textContent = `Account created for ${data.account.name}. You can now log in.`;
+          form.reset();
+        }
+      } catch (err) {
+        messageEl.className = 'message error';
+        messageEl.textContent = 'Could not reach the server.';
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Create Account';
+      }
+    });
+  </script>
+</body>
+</html>
