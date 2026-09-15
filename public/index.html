@@ -8,6 +8,130 @@
     data-consentiq-key="1a4bca7c-6113-41ac-a49e-d534295a0d34"
     data-consentiq-autoblock="0"
     data-consentiq-api="https://consent.dev.iqworks.ai"></script>
+
+  <!-- Real third-party trackers below, with placeholder/dummy account IDs.
+       These are for the Cookie Scanner to detect real tracker domains and
+       cookies — not for actually sending analytics anywhere. -->
+
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DUMMY00000"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DUMMY00000');
+  </script>
+
+  <!-- Google Ads conversion tracking -->
+  <script>
+    gtag('config', 'AW-0000000000');
+  </script>
+
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-DUMMY01');</script>
+
+  <!-- Meta (Facebook) Pixel -->
+  <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '000000000000000');
+    fbq('track', 'PageView');
+  </script>
+
+  <!-- Hotjar -->
+  <script>
+    (function(h,o,t,j,a,r){
+      h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+      h._hjSettings={hjid:0000000,hjsv:6};
+      a=o.getElementsByTagName('head')[0];
+      r=o.createElement('script');r.async=1;
+      r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+      a.appendChild(r);
+    })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+  </script>
+
+  <!-- Microsoft Clarity -->
+  <script>
+    (function(c,l,a,r,i,t,y){
+      c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+      t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+      y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "dummy0000");
+  </script>
+
+  <!-- LinkedIn Insight Tag -->
+  <script>
+    _linkedin_partner_id = "0000000";
+    window._linkedin_data_partner_ids = window._linkedin_data_partner_ids || [];
+    window._linkedin_data_partner_ids.push(_linkedin_partner_id);
+  </script>
+  <script src="https://snap.licdn.com/li.lms-analytics/insight.min.js" async></script>
+
+  <!-- Twitter/X Pixel -->
+  <script>
+    !function(e,t,n,s,u,a){e.twq||(s=e.twq=function(){s.exe?s.exe.apply(s,arguments):s.queue.push(arguments);
+    },s.version='1.1',s.queue=[],u=t.createElement(n),u.async=!0,u.src='https://static.ads-twitter.com/uwt.js',
+    a=t.getElementsByTagName(n)[0],a.parentNode.insertBefore(u,a))}(window,document,'script');
+    twq('config','dummy0');
+  </script>
+
+  <!-- TikTok Pixel -->
+  <script>
+    !function (w, d, t) {
+      w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];
+      ttq.methods=["page","track","identify"];
+      ttq.load=function(e){var script=document.createElement("script");
+      script.async=!0;script.src="https://analytics.tiktok.com/i18n/pixel/events.js?sdkid="+e;
+      var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(script,s)};
+      ttq.load('CDUMMY00000000000000');ttq.page();
+    }(window, document, 'ttq');
+  </script>
+
+  <!-- Pinterest Tag -->
+  <script>
+    !function(e){if(!window.pintrk){window.pintrk=function(){window.pintrk.queue.push(
+    Array.prototype.slice.call(arguments))};var n=window.pintrk;n.queue=[],n.version="3.0";
+    var t=document.createElement("script");t.async=!0,t.src=e;
+    var r=document.getElementsByTagName("script")[0];r.parentNode.insertBefore(t,r)}}
+    ("https://s.pinimg.com/ct/core.js");
+    pintrk('load', '0000000000000');
+    pintrk('page');
+  </script>
+
+  <!-- HubSpot -->
+  <script type="text/javascript" id="hs-script-loader" async defer src="https://js.hs-scripts.com/00000000.js"></script>
+
+  <!-- Mixpanel -->
+  <script src="https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js"></script>
+  <script>mixpanel.init("dummy00000000000000000000000000");</script>
+
+  <!-- Segment -->
+  <script>
+    !function(){var analytics=window.analytics=window.analytics||[];
+    if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");
+    else{analytics.invoked=!0;analytics.load=function(key){var t=document.createElement("script");
+    t.type="text/javascript";t.async=!0;t.src="https://cdn.segment.com/analytics.js/v1/"+key+"/analytics.min.js";
+    var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(t,n);};
+    analytics.load("dummy00000000000000000000");analytics.page();}}();
+  </script>
+
+  <!-- Crisp Chat -->
+  <script>
+    window.$crisp=[];window.CRISP_WEBSITE_ID="00000000-0000-0000-0000-000000000000";
+    (function(){d=document;s=d.createElement("script");s.src="https://client.crisp.chat/l.js";
+    s.async=1;d.getElementsByTagName("head")[0].appendChild(s);})();
+  </script>
+
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
