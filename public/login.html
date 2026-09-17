@@ -94,27 +94,35 @@
       ttq.load=function(e){var script=document.createElement("script");
       script.async=!0;script.src="https://analytics.tiktok.com/i18n/pixel/events.js?sdkid="+e;
       var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(script,s)};
-      ttq.load('CDUMMY00000000000000');ttq.page();
+      ttq.load('CDUMMY00000000000000');if (ttq.page) { ttq.page(); }
     }(window, document, 'ttq');
   </script>
 
-  <!-- Pinterest Tag -->
+  <!-- Pinterest Tag (inert: static tag, must be marked for ConsentIQ to catch it) -->
   <script>
-    !function(e){if(!window.pintrk){window.pintrk=function(){window.pintrk.queue.push(
-    Array.prototype.slice.call(arguments))};var n=window.pintrk;n.queue=[],n.version="3.0";
-    var t=document.createElement("script");t.async=!0,t.src=e;
-    var r=document.getElementsByTagName("script")[0];r.parentNode.insertBefore(t,r)}}
-    ("https://s.pinimg.com/ct/core.js");
+    window.pintrk = window.pintrk || function(){window.pintrk.queue.push(Array.prototype.slice.call(arguments))};
+    window.pintrk.queue = window.pintrk.queue || [];
+    window.pintrk.version = "3.0";
     pintrk('load', '0000000000000');
     pintrk('page');
   </script>
+  <script type="text/plain" data-consentiq-src="https://s.pinimg.com/ct/core.js" data-consentiq-cat="marketing" async></script>
 
   <!-- HubSpot (inert: static tag, must be marked for ConsentIQ to catch it) -->
   <script type="text/plain" id="hs-script-loader" data-consentiq-src="https://js.hs-scripts.com/00000000.js" data-consentiq-cat="marketing" async defer></script>
 
   <!-- Mixpanel (inert: static tag, must be marked for ConsentIQ to catch it) -->
-  <script type="text/plain" data-consentiq-src="https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js" data-consentiq-cat="analytics"></script>
-  <script>if (window.mixpanel) { mixpanel.init("dummy00000000000000000000000000"); }</script>
+  <script type="text/plain" id="mixpanel-inert-script" data-consentiq-src="https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js" data-consentiq-cat="analytics"></script>
+  <script>
+    (function () {
+      var mpScript = document.getElementById('mixpanel-inert-script');
+      if (mpScript) {
+        mpScript.addEventListener('load', function () {
+          if (window.mixpanel) { mixpanel.init("dummy00000000000000000000000000"); }
+        });
+      }
+    })();
+  </script>
 
   <!-- Segment -->
   <script>
@@ -123,7 +131,7 @@
     else{analytics.invoked=!0;analytics.load=function(key){var t=document.createElement("script");
     t.type="text/javascript";t.async=!0;t.src="https://cdn.segment.com/analytics.js/v1/"+key+"/analytics.min.js";
     var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(t,n);};
-    analytics.load("dummy00000000000000000000");analytics.page();}}();
+    analytics.load("dummy00000000000000000000");if (analytics.page) { analytics.page(); }}}();
   </script>
 
   <link rel="stylesheet" href="style.css" />
