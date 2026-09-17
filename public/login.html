@@ -13,8 +13,8 @@
        These are for the Cookie Scanner to detect real tracker domains and
        cookies — not for actually sending analytics anywhere. -->
 
-  <!-- Google Analytics 4 (inert: static tag, must be marked for ConsentIQ to catch it) -->
-  <script type="text/plain" data-consentiq-src="https://www.googletagmanager.com/gtag/js?id=G-DUMMY00000" data-consentiq-cat="analytics" async></script>
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DUMMY00000"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
@@ -75,8 +75,7 @@
     window._linkedin_data_partner_ids = window._linkedin_data_partner_ids || [];
     window._linkedin_data_partner_ids.push(_linkedin_partner_id);
   </script>
-  <!-- inert: static tag, must be marked for ConsentIQ to catch it -->
-  <script type="text/plain" data-consentiq-src="https://snap.licdn.com/li.lms-analytics/insight.min.js" data-consentiq-cat="marketing" async></script>
+  <script src="https://snap.licdn.com/li.lms-analytics/insight.min.js" async></script>
 
   <!-- Twitter/X Pixel -->
   <script>
@@ -109,12 +108,12 @@
     pintrk('page');
   </script>
 
-  <!-- HubSpot (inert: static tag, must be marked for ConsentIQ to catch it) -->
-  <script type="text/plain" id="hs-script-loader" data-consentiq-src="https://js.hs-scripts.com/00000000.js" data-consentiq-cat="marketing" async defer></script>
+  <!-- HubSpot -->
+  <script type="text/javascript" id="hs-script-loader" async defer src="https://js.hs-scripts.com/00000000.js"></script>
 
-  <!-- Mixpanel (inert: static tag, must be marked for ConsentIQ to catch it) -->
-  <script type="text/plain" data-consentiq-src="https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js" data-consentiq-cat="analytics"></script>
-  <script>if (window.mixpanel) { mixpanel.init("dummy00000000000000000000000000"); }</script>
+  <!-- Mixpanel -->
+  <script src="https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js"></script>
+  <script>mixpanel.init("dummy00000000000000000000000000");</script>
 
   <!-- Segment -->
   <script>
