@@ -6,15 +6,15 @@
   <title>Dummy Bank - Log In</title>
   <script src="https://consent.dev.iqworks.ai/v1/blocker.js"
     data-consentiq-key="1a4bca7c-6113-41ac-a49e-d534295a0d34"
-    data-consentiq-autoblock="0"
+    data-consentiq-autoblock="1"
     data-consentiq-api="https://consent.dev.iqworks.ai"></script>
 
   <!-- Real third-party trackers below, with placeholder/dummy account IDs.
        These are for the Cookie Scanner to detect real tracker domains and
        cookies — not for actually sending analytics anywhere. -->
 
-  <!-- Google Analytics 4 -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DUMMY00000"></script>
+  <!-- Google Analytics 4 (marked inert per ConsentIQ's own instructions: static tag) -->
+  <script type="text/plain" data-consentiq-src="https://www.googletagmanager.com/gtag/js?id=G-DUMMY00000" data-consentiq-cat="analytics"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
@@ -75,7 +75,8 @@
     window._linkedin_data_partner_ids = window._linkedin_data_partner_ids || [];
     window._linkedin_data_partner_ids.push(_linkedin_partner_id);
   </script>
-  <script src="https://snap.licdn.com/li.lms-analytics/insight.min.js" async></script>
+  <!-- marked inert per ConsentIQ's own instructions: static tag -->
+  <script type="text/plain" data-consentiq-src="https://snap.licdn.com/li.lms-analytics/insight.min.js" data-consentiq-cat="marketing"></script>
 
   <!-- Twitter/X Pixel -->
   <script>
@@ -97,22 +98,21 @@
     }(window, document, 'ttq');
   </script>
 
-  <!-- Pinterest Tag -->
+  <!-- Pinterest Tag (marked inert per ConsentIQ's own instructions: static tag) -->
   <script>
-    !function(e){if(!window.pintrk){window.pintrk=function(){window.pintrk.queue.push(
-    Array.prototype.slice.call(arguments))};var n=window.pintrk;n.queue=[],n.version="3.0";
-    var t=document.createElement("script");t.async=!0,t.src=e;
-    var r=document.getElementsByTagName("script")[0];r.parentNode.insertBefore(t,r)}}
-    ("https://s.pinimg.com/ct/core.js");
+    window.pintrk = window.pintrk || function(){window.pintrk.queue.push(Array.prototype.slice.call(arguments))};
+    window.pintrk.queue = window.pintrk.queue || [];
+    window.pintrk.version = "3.0";
     pintrk('load', '0000000000000');
     pintrk('page');
   </script>
+  <script type="text/plain" data-consentiq-src="https://s.pinimg.com/ct/core.js" data-consentiq-cat="marketing"></script>
 
-  <!-- HubSpot -->
-  <script type="text/javascript" id="hs-script-loader" async defer src="https://js.hs-scripts.com/00000000.js"></script>
+  <!-- HubSpot (marked inert per ConsentIQ's own instructions: static tag) -->
+  <script type="text/plain" id="hs-script-loader" data-consentiq-src="https://js.hs-scripts.com/00000000.js" data-consentiq-cat="marketing"></script>
 
-  <!-- Mixpanel -->
-  <script src="https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js"></script>
+  <!-- Mixpanel (marked inert per ConsentIQ's own instructions: static tag) -->
+  <script type="text/plain" data-consentiq-src="https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js" data-consentiq-cat="analytics"></script>
   <script>mixpanel.init("dummy00000000000000000000000000");</script>
 
   <!-- Segment -->
