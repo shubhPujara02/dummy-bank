@@ -98,16 +98,22 @@ async function syncLead(lead) {
   }
 }
 
-function newLead(fields, channel, customerId) {
+// What ConsentIQ's capture() resolved with in the browser, kept as a receipt on
+// the lead. ConsentIQ stays the system of record and syncs consent to HubSpot.
+function consentReceipt(raw) {
+  if (!raw || typeof raw !== 'object') return null;
+  const json = JSON.stringify(raw);
+  return { capturedAt: new Date().toISOString(), result: json.length > 4000 ? { truncated: json.slice(0, 4000) } : raw };
+}
+
+function newLead(fields, channel, customerId, consent) {
   return {
     id: crypto.randomUUID(),
     ...fields,
     channel,
     customerId: customerId || null,
     createdAt: new Date().toISOString(),
-    // Placeholder: the ConsentIQ consent record id will be attached here once
-    // consent capture is wired in.
-    consent: null,
+    consent: consentReceipt(consent),
   };
 }
 
@@ -131,7 +137,7 @@ app.post('/api/signup', async (req, res) => {
 
   const customerId = 'DB' + String(crypto.randomInt(0, 1e8)).padStart(8, '0');
   const account = store.addAccount({ customerId, ...fields, createdAt: new Date().toISOString() });
-  const lead = await syncLead(store.addLead(newLead(fields, 'website_signup', customerId)));
+  const lead = await syncLead(store.addLead(newLead(fields, 'website_signup', customerId, req.body.consent)));
 
   res.status(201).json({ message: 'account created', account, hubspot: lead.hubspot });
 });
@@ -141,7 +147,7 @@ app.post('/api/callback', async (req, res) => {
   const errors = validateLead(fields, { requireAccountFields: false });
   if (errors.length) return res.status(400).json({ error: errors.join(', ') });
 
-  const lead = await syncLead(store.addLead(newLead(fields, 'website_callback')));
+  const lead = await syncLead(store.addLead(newLead(fields, 'website_callback', null, req.body.consent)));
   res.status(201).json({ message: 'callback requested', leadId: lead.id, hubspot: lead.hubspot });
 });
 

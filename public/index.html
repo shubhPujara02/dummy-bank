@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dummy Bank - Banking made simple</title>
   <!--#head-->
+  <!-- ConsentIQ Embed: renders the privacy notice + consent statements inside #consentiq -->
+  <script src="https://consent.dev.iqworks.ai/v1/embed.js"
+    data-key="368ba711-d615-4cd6-b9b2-178066f83474" data-mount="#consentiq" async></script>
   <link rel="stylesheet" href="/style.css" />
 </head>
 <body>
@@ -125,7 +128,7 @@
           </div>
           <div class="row">
             <div class="field"><label for="cb-mobile">Mobile number</label><input id="cb-mobile" name="mobile" type="tel" maxlength="10" placeholder="10-digit mobile" required /></div>
-            <div class="field"><label for="cb-email">Email</label><input id="cb-email" name="email" type="email" required /></div>
+            <div class="field"><label for="cb-email">Email</label><input id="cb-email" name="email" type="email" required data-consentiq-identifier-input /></div>
           </div>
           <div class="row">
             <div class="field"><label for="cb-product">Product</label><select id="cb-product" name="product" data-catalog="products" required></select></div>
@@ -138,7 +141,8 @@
               </select>
             </div>
           </div>
-          <!-- ConsentIQ consent capture will go here (intentionally not added yet). -->
+          <div id="consentiq" class="consent-box"></div>
+          <p class="hint">Your consent is recorded by ConsentIQ. Read our <a href="/privacy.html">privacy notice</a>.</p>
           <button class="btn-block" type="submit">Call me back</button>
         </form>
         <div class="message"></div>

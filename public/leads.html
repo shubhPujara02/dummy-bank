@@ -49,7 +49,7 @@
           <td>${e(l.channel)}</td>
           <td>${e(l.utm?.source || '—')}</td>
           <td><span class="pill ${e(l.hubspot?.status)}" title="${e(l.hubspot?.reason || '')}">${e(l.hubspot?.status || '—')}</span></td>
-          <td>${l.consent ? e(l.consent) : '<span class="pill skipped">not captured</span>'}</td>
+          <td>${l.consent ? `<span class="pill synced" title="${e(JSON.stringify(l.consent.result))}">captured</span>` : '<span class="pill skipped">not captured</span>'}</td>
         </tr>`).join('') : '<tr><td colspan="9">No leads yet.</td></tr>';
     });
   </script>
