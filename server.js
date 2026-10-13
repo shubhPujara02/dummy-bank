@@ -1,78 +1,166 @@
 const express = require('express');
+const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
 
+const catalog = require('./lib/catalog');
+const store = require('./lib/store');
+const hubspot = require('./lib/hubspot');
+
 const app = express();
 const PORT = process.env.PORT || 4000;
-
-const DATA_DIR = path.join(__dirname, 'data');
-const CSV_PATH = path.join(DATA_DIR, 'signups.csv');
-const CSV_HEADER = 'name,mobile,email,created_at\n';
-
-if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
-if (!fs.existsSync(CSV_PATH)) fs.writeFileSync(CSV_PATH, CSV_HEADER);
+const PUBLIC_DIR = path.join(__dirname, 'public');
+const HEAD_HTML = fs.readFileSync(path.join(__dirname, 'partials', 'head.html'), 'utf8');
 
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public')));
 
-function escapeCsv(value) {
-  const str = String(value);
-  if (/[",\n]/.test(str)) return `"${str.replace(/"/g, '""')}"`;
-  return str;
+// Serve HTML pages with the shared <head> (ConsentIQ blocker + trackers)
+// injected at the <!--#head--> marker, so every page carries the same tags.
+app.get(['/', '/*.html'], (req, res, next) => {
+  const file = req.path === '/' ? 'index.html' : req.path.slice(1);
+  const full = path.join(PUBLIC_DIR, file);
+  if (!full.startsWith(PUBLIC_DIR) || !fs.existsSync(full)) return next();
+  const html = fs.readFileSync(full, 'utf8').replace('<!--#head-->', HEAD_HTML);
+  res.type('html').send(html);
+});
+app.use(express.static(PUBLIC_DIR));
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const MOBILE_RE = /^[6-9]\d{9}$/;
+
+function validateLead(body, { requireAccountFields }) {
+  const errors = [];
+  if (!body.firstName) errors.push('first name is required');
+  if (!body.lastName) errors.push('last name is required');
+  if (!MOBILE_RE.test(body.mobile || '')) errors.push('mobile must be a valid 10-digit Indian number');
+  if (!EMAIL_RE.test(body.email || '')) errors.push('email is invalid');
+  if (!catalog.isValid(catalog.PRODUCTS, body.product)) errors.push('choose a product');
+  if (requireAccountFields) {
+    if (!body.city) errors.push('city is required');
+    if (!catalog.isValid(catalog.INCOME_BANDS, body.incomeBand)) errors.push('choose an income band');
+  }
+  if (body.language && !catalog.isValid(catalog.LANGUAGES, body.language)) errors.push('invalid language');
+  return errors;
 }
 
-function readSignups() {
-  const raw = fs.readFileSync(CSV_PATH, 'utf8').trim();
-  const lines = raw.split('\n').slice(1).filter(Boolean);
-  return lines.map((line) => {
-    const [name, mobile, email, created_at] = line
-      .match(/(".*?"|[^,]+)(?=,|$)/g)
-      .map((v) => v.replace(/^"|"$/g, '').replace(/""/g, '"'));
-    return { name, mobile, email, created_at };
-  });
+function pick(body) {
+  const s = (v) => (typeof v === 'string' ? v.trim() : '');
+  return {
+    firstName: s(body.firstName),
+    lastName: s(body.lastName),
+    mobile: s(body.mobile),
+    email: s(body.email).toLowerCase(),
+    city: s(body.city),
+    product: s(body.product),
+    incomeBand: s(body.incomeBand),
+    language: s(body.language) || 'en',
+    preferredTime: s(body.preferredTime),
+    utm: {
+      source: s(body.utm?.source),
+      medium: s(body.utm?.medium),
+      campaign: s(body.utm?.campaign),
+    },
+  };
 }
 
-app.post('/api/signup', (req, res) => {
-  const { name, mobile, email } = req.body || {};
+// Map a Dummy Bank lead to HubSpot contact properties.
+function toHubSpot(lead) {
+  return {
+    email: lead.email,
+    firstname: lead.firstName,
+    lastname: lead.lastName,
+    mobilephone: `+91${lead.mobile}`,
+    city: lead.city || undefined,
+    country: 'India',
+    lifecyclestage: lead.customerId ? 'customer' : 'lead',
+    hs_lead_status: 'NEW',
+    db_product_interest: lead.product,
+    db_income_band: lead.incomeBand || undefined,
+    db_lead_channel: lead.channel,
+    db_kyc_status: lead.customerId ? 'not_started' : undefined,
+    db_preferred_language: lead.language,
+    db_customer_id: lead.customerId || undefined,
+  };
+}
 
-  if (!name || !mobile || !email) {
-    return res.status(400).json({ error: 'name, mobile and email are required' });
+// Pushes the lead to HubSpot if a token is configured. Never fails the request:
+// the outcome is recorded on the lead so it shows up on /leads.html.
+async function syncLead(lead) {
+  if (!hubspot.isConfigured()) {
+    return store.updateLead(lead.id, { hubspot: { status: 'skipped', reason: 'HUBSPOT_ACCESS_TOKEN not set' } });
   }
-  if (!/^\d{10}$/.test(mobile)) {
-    return res.status(400).json({ error: 'mobile must be a 10-digit number' });
+  try {
+    const result = await hubspot.upsertContact(toHubSpot(lead));
+    return store.updateLead(lead.id, { hubspot: { status: 'synced', contactId: result?.id, at: new Date().toISOString() } });
+  } catch (err) {
+    console.error(err.message);
+    return store.updateLead(lead.id, { hubspot: { status: 'error', reason: err.message } });
   }
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    return res.status(400).json({ error: 'email is invalid' });
-  }
+}
 
-  const signups = readSignups();
-  if (signups.some((s) => s.mobile === mobile)) {
+function newLead(fields, channel, customerId) {
+  return {
+    id: crypto.randomUUID(),
+    ...fields,
+    channel,
+    customerId: customerId || null,
+    createdAt: new Date().toISOString(),
+    // Placeholder: the ConsentIQ consent record id will be attached here once
+    // consent capture is wired in.
+    consent: null,
+  };
+}
+
+app.get('/api/catalog', (req, res) => {
+  const { PRODUCTS, INCOME_BANDS, LANGUAGES } = catalog;
+  res.json({ products: PRODUCTS, incomeBands: INCOME_BANDS, languages: LANGUAGES });
+});
+
+app.get('/api/health', (req, res) => {
+  res.json({ ok: true, hubspotConfigured: hubspot.isConfigured() });
+});
+
+app.post('/api/signup', async (req, res) => {
+  const fields = pick(req.body || {});
+  const errors = validateLead(fields, { requireAccountFields: true });
+  if (errors.length) return res.status(400).json({ error: errors.join(', ') });
+
+  if (store.findAccount((a) => a.mobile === fields.mobile)) {
     return res.status(409).json({ error: 'an account with this mobile number already exists' });
   }
 
-  const row = [name, mobile, email, new Date().toISOString()].map(escapeCsv).join(',') + '\n';
-  fs.appendFileSync(CSV_PATH, row);
+  const customerId = 'DB' + String(crypto.randomInt(0, 1e8)).padStart(8, '0');
+  const account = store.addAccount({ customerId, ...fields, createdAt: new Date().toISOString() });
+  const lead = await syncLead(store.addLead(newLead(fields, 'website_signup', customerId)));
 
-  res.status(201).json({ message: 'account created', account: { name, mobile, email } });
+  res.status(201).json({ message: 'account created', account, hubspot: lead.hubspot });
+});
+
+app.post('/api/callback', async (req, res) => {
+  const fields = pick(req.body || {});
+  const errors = validateLead(fields, { requireAccountFields: false });
+  if (errors.length) return res.status(400).json({ error: errors.join(', ') });
+
+  const lead = await syncLead(store.addLead(newLead(fields, 'website_callback')));
+  res.status(201).json({ message: 'callback requested', leadId: lead.id, hubspot: lead.hubspot });
 });
 
 app.post('/api/login', (req, res) => {
-  const { mobile } = req.body || {};
+  const mobile = String(req.body?.mobile || '').trim();
+  if (!mobile) return res.status(400).json({ error: 'mobile is required' });
 
-  if (!mobile) {
-    return res.status(400).json({ error: 'mobile is required' });
-  }
-
-  const signups = readSignups();
-  const account = signups.find((s) => s.mobile === mobile);
-
-  if (!account) {
-    return res.status(404).json({ error: 'no account found for this mobile number' });
-  }
+  const account = store.findAccount((a) => a.mobile === mobile);
+  if (!account) return res.status(404).json({ error: 'no account found for this mobile number' });
 
   res.json({ message: 'login success', account });
 });
 
+// Test-only: lets you see what the site captured and whether it reached HubSpot.
+app.get('/api/leads', (req, res) => {
+  res.json({ hubspotConfigured: hubspot.isConfigured(), leads: store.listLeads().slice().reverse() });
+});
+
 app.listen(PORT, () => {
-  console.log(`Dummy Bank test app running at http://localhost:${PORT}`);
+  console.log(`Dummy Bank running at http://localhost:${PORT}`);
+  console.log(`HubSpot sync: ${hubspot.isConfigured() ? 'ON' : 'OFF (set HUBSPOT_ACCESS_TOKEN to enable)'}`);
 });

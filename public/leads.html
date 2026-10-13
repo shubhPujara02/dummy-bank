@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dummy Bank - Captured Leads (test)</title>
+  <!--#head-->
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav">
+      <a class="logo" href="/"><span class="logo-mark">D</span>DUMMY BANK</a>
+      <div class="nav-links">
+        <a href="/#products">Products</a>
+        <a href="/#callback">Talk to us</a>
+        <a href="/privacy.html">Privacy</a>
+        <a href="/leads.html" class="active">Leads (test)</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container" style="margin-top:32px">
+    <h1>Captured leads</h1>
+    <p class="subtitle" id="status">Test view: every lead this site captured, and whether it reached HubSpot.</p>
+    <div class="card table-wrap" style="padding:0">
+      <table>
+        <thead>
+          <tr><th>When</th><th>Name</th><th>Email</th><th>Mobile</th><th>Product</th><th>Channel</th><th>UTM source</th><th>HubSpot</th><th>Consent</th></tr>
+        </thead>
+        <tbody id="rows"><tr><td colspan="9">Loading…</td></tr></tbody>
+      </table>
+    </div>
+  </main>
+
+  <script src="/js/app.js"></script>
+  <script>
+    fetch('/api/leads').then((r) => r.json()).then(({ hubspotConfigured, leads }) => {
+      const e = DummyBank.escapeHtml;
+      document.getElementById('status').textContent +=
+        hubspotConfigured ? ' HubSpot sync is ON.' : ' HubSpot sync is OFF (set HUBSPOT_ACCESS_TOKEN).';
+      document.getElementById('rows').innerHTML = leads.length ? leads.map((l) => `
+        <tr>
+          <td>${e(new Date(l.createdAt).toLocaleString())}</td>
+          <td>${e(l.firstName)} ${e(l.lastName)}</td>
+          <td>${e(l.email)}</td>
+          <td>${e(l.mobile)}</td>
+          <td>${e(l.product)}</td>
+          <td>${e(l.channel)}</td>
+          <td>${e(l.utm?.source || '—')}</td>
+          <td><span class="pill ${e(l.hubspot?.status)}" title="${e(l.hubspot?.reason || '')}">${e(l.hubspot?.status || '—')}</span></td>
+          <td>${l.consent ? e(l.consent) : '<span class="pill skipped">not captured</span>'}</td>
+        </tr>`).join('') : '<tr><td colspan="9">No leads yet.</td></tr>';
+    });
+  </script>
+</body>
+</html>

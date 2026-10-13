@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dummy Bank - My Account</title>
+  <!--#head-->
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav">
+      <a class="logo" href="/"><span class="logo-mark">D</span>DUMMY BANK</a>
+      <div class="nav-links">
+        <a href="/dashboard.html" class="active">My account</a>
+        <a href="/privacy.html">Privacy</a>
+      </div>
+      <div class="nav-cta">
+        <a class="btn btn-outline" href="/login.html" id="logout">Log out</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container" style="margin-top:32px">
+    <h1 id="greeting">Hello</h1>
+    <p class="subtitle">Here's a summary of your (entirely fictional) money.</p>
+
+    <div class="grid">
+      <div class="card balance-card">
+        <div class="muted">Savings account balance</div>
+        <div class="amount">₹1,24,580.00</div>
+        <div class="muted" id="acct-no"></div>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">Profile</h3>
+        <dl class="details" id="profile"></dl>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">Privacy & consent</h3>
+        <p class="subtitle">Review or change how Dummy Bank uses your data.</p>
+        <a class="btn" href="https://consent.dev.iqworks.ai/portal/consent/368ba711-d615-4cd6-b9b2-178066f83474">Manage my consent</a>
+      </div>
+    </div>
+  </main>
+
+  <script src="/js/app.js"></script>
+  <script>
+    const account = JSON.parse(sessionStorage.getItem('db_account') || 'null');
+    if (!account) location.href = '/login.html';
+    else {
+      const e = DummyBank.escapeHtml;
+      document.getElementById('greeting').textContent = `Hello, ${account.firstName}`;
+      document.getElementById('acct-no').textContent = `Customer ID ${account.customerId}`;
+      const rows = { Name: `${account.firstName} ${account.lastName}`, Mobile: account.mobile, Email: account.email, City: account.city, Product: account.product };
+      document.getElementById('profile').innerHTML = Object.entries(rows).map(([k, v]) => `<dt>${k}</dt><dd>${e(v)}</dd>`).join('');
+    }
+    document.getElementById('logout').addEventListener('click', () => sessionStorage.removeItem('db_account'));
+  </script>
+</body>
+</html>

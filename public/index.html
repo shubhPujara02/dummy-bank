@@ -3,200 +3,166 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dummy Bank - Open an Account</title>
-  <script src="https://consent.dev.iqworks.ai/v1/blocker.js"
-    data-consentiq-key="1a4bca7c-6113-41ac-a49e-d534295a0d34"
-    data-consentiq-autoblock="1"
-    data-consentiq-api="https://consent.dev.iqworks.ai"></script>
-
-  <!-- Real third-party trackers below, with placeholder/dummy account IDs.
-       These are for the Cookie Scanner to detect real tracker domains and
-       cookies — not for actually sending analytics anywhere. -->
-
-  <!-- Google Analytics 4 (marked inert per ConsentIQ's own instructions: static tag) -->
-  <script type="text/plain" data-consentiq-src="https://www.googletagmanager.com/gtag/js?id=G-DUMMY00000" data-consentiq-cat="analytics"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-DUMMY00000');
-  </script>
-
-  <!-- Google Ads conversion tracking -->
-  <script>
-    gtag('config', 'AW-0000000000');
-  </script>
-
-  <!-- Google Tag Manager -->
-  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-DUMMY01');</script>
-
-  <!-- Meta (Facebook) Pixel -->
-  <script>
-    !function(f,b,e,v,n,t,s)
-    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-    n.queue=[];t=b.createElement(e);t.async=!0;
-    t.src=v;s=b.getElementsByTagName(e)[0];
-    s.parentNode.insertBefore(t,s)}(window, document,'script',
-    'https://connect.facebook.net/en_US/fbevents.js');
-    fbq('init', '000000000000000');
-    fbq('track', 'PageView');
-  </script>
-
-  <!-- Hotjar -->
-  <script>
-    (function(h,o,t,j,a,r){
-      h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
-      h._hjSettings={hjid:0000000,hjsv:6};
-      a=o.getElementsByTagName('head')[0];
-      r=o.createElement('script');r.async=1;
-      r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
-      a.appendChild(r);
-    })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
-  </script>
-
-  <!-- Microsoft Clarity -->
-  <script>
-    (function(c,l,a,r,i,t,y){
-      c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-      t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-      y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "dummy0000");
-  </script>
-
-  <!-- LinkedIn Insight Tag -->
-  <script>
-    _linkedin_partner_id = "0000000";
-    window._linkedin_data_partner_ids = window._linkedin_data_partner_ids || [];
-    window._linkedin_data_partner_ids.push(_linkedin_partner_id);
-  </script>
-  <!-- marked inert per ConsentIQ's own instructions: static tag -->
-  <script type="text/plain" data-consentiq-src="https://snap.licdn.com/li.lms-analytics/insight.min.js" data-consentiq-cat="marketing"></script>
-
-  <!-- Twitter/X Pixel -->
-  <script>
-    !function(e,t,n,s,u,a){e.twq||(s=e.twq=function(){s.exe?s.exe.apply(s,arguments):s.queue.push(arguments);
-    },s.version='1.1',s.queue=[],u=t.createElement(n),u.async=!0,u.src='https://static.ads-twitter.com/uwt.js',
-    a=t.getElementsByTagName(n)[0],a.parentNode.insertBefore(u,a))}(window,document,'script');
-    twq('config','dummy0');
-  </script>
-
-  <!-- TikTok Pixel -->
-  <script>
-    !function (w, d, t) {
-      w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];
-      ttq.methods=["page","track","identify"];
-      ttq.load=function(e){var script=document.createElement("script");
-      script.async=!0;script.src="https://analytics.tiktok.com/i18n/pixel/events.js?sdkid="+e;
-      var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(script,s)};
-      ttq.load('CDUMMY00000000000000');ttq.page();
-    }(window, document, 'ttq');
-  </script>
-
-  <!-- Pinterest Tag (marked inert per ConsentIQ's own instructions: static tag) -->
-  <script>
-    window.pintrk = window.pintrk || function(){window.pintrk.queue.push(Array.prototype.slice.call(arguments))};
-    window.pintrk.queue = window.pintrk.queue || [];
-    window.pintrk.version = "3.0";
-    pintrk('load', '0000000000000');
-    pintrk('page');
-  </script>
-  <script type="text/plain" data-consentiq-src="https://s.pinimg.com/ct/core.js" data-consentiq-cat="marketing"></script>
-
-  <!-- HubSpot (marked inert per ConsentIQ's own instructions: static tag) -->
-  <script type="text/plain" id="hs-script-loader" data-consentiq-src="https://js.hs-scripts.com/00000000.js" data-consentiq-cat="marketing"></script>
-
-  <!-- Mixpanel (marked inert per ConsentIQ's own instructions: static tag) -->
-  <script type="text/plain" data-consentiq-src="https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js" data-consentiq-cat="analytics"></script>
-  <script>mixpanel.init("dummy00000000000000000000000000");</script>
-
-  <!-- Segment -->
-  <script>
-    !function(){var analytics=window.analytics=window.analytics||[];
-    if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");
-    else{analytics.invoked=!0;analytics.load=function(key){var t=document.createElement("script");
-    t.type="text/javascript";t.async=!0;t.src="https://cdn.segment.com/analytics.js/v1/"+key+"/analytics.min.js";
-    var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(t,n);};
-    analytics.load("dummy00000000000000000000");analytics.page();}}();
-  </script>
-
-  <link rel="stylesheet" href="style.css" />
+  <title>Dummy Bank - Banking made simple</title>
+  <!--#head-->
+  <link rel="stylesheet" href="/style.css" />
 </head>
 <body>
-  <header><div class="logo">DUMMY BANK</div></header>
-  <main>
-    <div class="card">
-      <h1>Let's Get Started</h1>
-      <p class="subtitle">Create your account to continue.</p>
+  <header class="site-header">
+    <nav class="nav">
+      <a class="logo" href="/"><span class="logo-mark">D</span>DUMMY BANK</a>
+      <div class="nav-links">
+        <a href="/#products">Products</a>
+        <a href="/#callback">Talk to us</a>
+        <a href="/privacy.html">Privacy</a>
+        <a href="/leads.html">Leads (test)</a>
+      </div>
+      <div class="nav-cta">
+        <a class="btn btn-outline" href="/login.html">Log in</a>
+        <a class="btn btn-gold" href="/open-account.html">Open account</a>
+      </div>
+    </nav>
+  </header>
 
-      <form id="signup-form">
-        <div class="field">
-          <label for="name">Full Name</label>
-          <input id="name" name="name" type="text" placeholder="Enter your full name" required />
+  <div class="hero">
+    <div class="container hero-grid">
+      <div>
+        <h1>Banking that keeps up with you.</h1>
+        <p>Open a zero-balance savings account in 5 minutes, get pre-approved loans and earn up to 7.5% on fixed deposits.</p>
+        <div class="hero-actions">
+          <a class="btn btn-gold" href="/open-account.html">Open an account</a>
+          <a class="btn btn-outline" href="#callback">Request a callback</a>
         </div>
-        <div class="field">
-          <label for="mobile">Mobile Number</label>
-          <input id="mobile" name="mobile" type="tel" placeholder="10-digit mobile number" maxlength="10" required />
+        <div class="hero-stats">
+          <div><strong>2.4M+</strong><span>Happy customers</span></div>
+          <div><strong>1,200</strong><span>Branches</span></div>
+          <div><strong>4.7★</strong><span>App rating</span></div>
         </div>
-        <div class="field">
-          <label for="email">Email ID</label>
-          <input id="email" name="email" type="email" placeholder="Enter your email" required />
-        </div>
-        <button type="submit" id="submit-btn">Create Account</button>
-      </form>
-
-      <div id="message" class="message"></div>
-      <a href="https://consent.dev.iqworks.ai/portal/consent/368ba711-d615-4cd6-b9b2-178066f83474">Give consent</a>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">Quick eligibility check</h3>
+        <p class="subtitle">Pick a product to start your application.</p>
+        <form action="/open-account.html" method="get">
+          <div class="field">
+            <label for="qe-product">I'm interested in</label>
+            <select id="qe-product" name="product" data-catalog="products"></select>
+          </div>
+          <button class="btn-block" type="submit">Check eligibility</button>
+        </form>
+      </div>
     </div>
-    <p class="footer-link">Already have an account? <a href="login.html">Log in</a></p>
-  </main>
+  </div>
 
+  <section id="products">
+    <div class="container">
+      <h2 class="section-title">Products for every goal</h2>
+      <p class="section-sub">Simple, transparent pricing. No hidden charges.</p>
+      <div class="grid">
+        <div class="card product-card">
+          <div class="product-icon">🏦</div>
+          <h3>Savings Account</h3>
+          <p>Zero balance, free debit card and instant UPI.</p>
+          <div class="rate">Up to 4.0% p.a.</div>
+          <p></p><a href="/open-account.html?product=savings_account">Open now →</a>
+        </div>
+        <div class="card product-card">
+          <div class="product-icon">💳</div>
+          <h3>Credit Card</h3>
+          <p>5% cashback on groceries, lifetime free.</p>
+          <div class="rate">₹0 annual fee</div>
+          <p></p><a href="/open-account.html?product=credit_card">Apply →</a>
+        </div>
+        <div class="card product-card">
+          <div class="product-icon">🏠</div>
+          <h3>Home Loan</h3>
+          <p>Up to 90% financing, tenure up to 30 years.</p>
+          <div class="rate">From 8.35% p.a.</div>
+          <p></p><a href="/open-account.html?product=home_loan">Check eligibility →</a>
+        </div>
+        <div class="card product-card">
+          <div class="product-icon">💼</div>
+          <h3>Personal Loan</h3>
+          <p>Instant approval, money in 10 minutes.</p>
+          <div class="rate">From 10.5% p.a.</div>
+          <p></p><a href="/open-account.html?product=personal_loan">Get offer →</a>
+        </div>
+        <div class="card product-card">
+          <div class="product-icon">🚗</div>
+          <h3>Car Loan</h3>
+          <p>100% on-road funding for select models.</p>
+          <div class="rate">From 8.9% p.a.</div>
+          <p></p><a href="/open-account.html?product=car_loan">Apply →</a>
+        </div>
+        <div class="card product-card">
+          <div class="product-icon">📈</div>
+          <h3>Fixed Deposit</h3>
+          <p>Lock in high rates from 7 days to 10 years.</p>
+          <div class="rate">Up to 7.5% p.a.</div>
+          <p></p><a href="/open-account.html?product=fixed_deposit">Book FD →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="features">
+    <div class="container grid">
+      <div class="feature"><div class="product-icon">🔒</div><h4>Bank-grade security</h4><p>256-bit encryption and 2-factor login.</p></div>
+      <div class="feature"><div class="product-icon">⚡</div><h4>Instant everything</h4><p>Video KYC, instant account number.</p></div>
+      <div class="feature"><div class="product-icon">🌐</div><h4>Your language</h4><p>Support in 6 Indian languages.</p></div>
+      <div class="feature"><div class="product-icon">🤝</div><h4>Human help</h4><p>24×7 call center and 1,200 branches.</p></div>
+    </div>
+  </section>
+
+  <section id="callback">
+    <div class="container" style="max-width:640px">
+      <div class="card">
+        <h2 class="section-title">Request a callback</h2>
+        <p class="subtitle">Leave your details and a relationship manager will call you within 24 hours.</p>
+        <form id="callback-form">
+          <div class="row">
+            <div class="field"><label for="cb-first">First name</label><input id="cb-first" name="firstName" required /></div>
+            <div class="field"><label for="cb-last">Last name</label><input id="cb-last" name="lastName" required /></div>
+          </div>
+          <div class="row">
+            <div class="field"><label for="cb-mobile">Mobile number</label><input id="cb-mobile" name="mobile" type="tel" maxlength="10" placeholder="10-digit mobile" required /></div>
+            <div class="field"><label for="cb-email">Email</label><input id="cb-email" name="email" type="email" required /></div>
+          </div>
+          <div class="row">
+            <div class="field"><label for="cb-product">Product</label><select id="cb-product" name="product" data-catalog="products" required></select></div>
+            <div class="field">
+              <label for="cb-time">Best time to call</label>
+              <select id="cb-time" name="preferredTime">
+                <option value="morning">Morning (9–12)</option>
+                <option value="afternoon">Afternoon (12–4)</option>
+                <option value="evening">Evening (4–8)</option>
+              </select>
+            </div>
+          </div>
+          <!-- ConsentIQ consent capture will go here (intentionally not added yet). -->
+          <button class="btn-block" type="submit">Call me back</button>
+        </form>
+        <div class="message"></div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div>
+        <strong style="color:#fff">Dummy Bank</strong>
+        <p class="disclaimer">Dummy Bank is a fictitious bank built only for testing ConsentIQ and HubSpot integrations. No real accounts, money or financial products exist here.</p>
+      </div>
+      <div>
+        <a href="/privacy.html">Privacy notice</a>
+        <a href="https://consent.dev.iqworks.ai/portal/consent/368ba711-d615-4cd6-b9b2-178066f83474">Manage consent</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/app.js"></script>
   <script>
-    const form = document.getElementById('signup-form');
-    const messageEl = document.getElementById('message');
-    const submitBtn = document.getElementById('submit-btn');
-
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      messageEl.className = 'message';
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Creating...';
-
-      const payload = {
-        name: document.getElementById('name').value.trim(),
-        mobile: document.getElementById('mobile').value.trim(),
-        email: document.getElementById('email').value.trim(),
-      };
-
-      try {
-        const res = await fetch('/api/signup', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-        });
-        const data = await res.json();
-
-        if (!res.ok) {
-          messageEl.className = 'message error';
-          messageEl.textContent = data.error || 'Something went wrong.';
-        } else {
-          messageEl.className = 'message success';
-          messageEl.textContent = `Account created for ${data.account.name}. You can now log in.`;
-          form.reset();
-        }
-      } catch (err) {
-        messageEl.className = 'message error';
-        messageEl.textContent = 'Could not reach the server.';
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Create Account';
-      }
-    });
+    DummyBank.bindForm(document.getElementById('callback-form'), '/api/callback', (data) =>
+      'Thanks! A relationship manager will call you soon.' + DummyBank.hubspotNote(data.hubspot));
   </script>
 </body>
 </html>

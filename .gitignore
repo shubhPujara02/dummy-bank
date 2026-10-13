@@ -1,2 +1,5 @@
 node_modules/
-data/signups.csv
+data/*.json
+data/*.tmp
+data/*.csv
+.env

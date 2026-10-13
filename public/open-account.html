@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dummy Bank - Open an Account</title>
+  <!--#head-->
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav">
+      <a class="logo" href="/"><span class="logo-mark">D</span>DUMMY BANK</a>
+      <div class="nav-links">
+        <a href="/#products">Products</a>
+        <a href="/#callback">Talk to us</a>
+        <a href="/privacy.html">Privacy</a>
+        <a href="/leads.html">Leads (test)</a>
+      </div>
+      <div class="nav-cta">
+        <a class="btn btn-outline" href="/login.html">Log in</a>
+        <a class="btn btn-gold" href="/open-account.html">Open account</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="narrow">
+    <div class="card">
+      <h1>Let's Get Started</h1>
+      <p class="subtitle">Open your Dummy Bank account in under 5 minutes.</p>
+
+      <form id="signup-form">
+        <div class="row">
+          <div class="field"><label for="firstName">First name</label><input id="firstName" name="firstName" placeholder="As on PAN card" required /></div>
+          <div class="field"><label for="lastName">Last name</label><input id="lastName" name="lastName" required /></div>
+        </div>
+        <div class="row">
+          <div class="field">
+            <label for="mobile">Mobile number</label>
+            <input id="mobile" name="mobile" type="tel" maxlength="10" placeholder="10-digit mobile" required />
+            <div class="hint">You'll use this to log in.</div>
+          </div>
+          <div class="field"><label for="email">Email ID</label><input id="email" name="email" type="email" required /></div>
+        </div>
+        <div class="row">
+          <div class="field"><label for="city">City</label><input id="city" name="city" placeholder="e.g. Ahmedabad" required /></div>
+          <div class="field"><label for="language">Preferred language</label><select id="language" name="language" data-catalog="languages"></select></div>
+        </div>
+        <div class="field"><label for="product">Product</label><select id="product" name="product" data-catalog="products" required></select></div>
+        <div class="field">
+          <label for="incomeBand">Monthly income</label>
+          <select id="incomeBand" name="incomeBand" data-catalog="incomeBands" required></select>
+        </div>
+        <!-- ConsentIQ consent capture will go here (intentionally not added yet). -->
+        <button class="btn-block" type="submit">Create Account</button>
+      </form>
+
+      <div class="message"></div>
+    </div>
+    <p class="footer-link">Already have an account? <a href="/login.html">Log in</a></p>
+  </main>
+
+  <script src="/js/app.js"></script>
+  <script>
+    DummyBank.bindForm(document.getElementById('signup-form'), '/api/signup', (data) =>
+      `Account created! Your customer ID is <strong>${DummyBank.escapeHtml(data.account.customerId)}</strong>.
+       <a href="/login.html">Log in</a> with your mobile number.` + DummyBank.hubspotNote(data.hubspot));
+  </script>
+</body>
+</html>
