@@ -14,7 +14,7 @@ const HEAD_HTML = fs.readFileSync(path.join(__dirname, 'partials', 'head.html'),
 
 app.use(express.json());
 
-// Serve HTML pages with the shared <head> (ConsentIQ blocker + trackers)
+// Serve HTML pages with the shared <head> (shared trackers)
 // injected at the <!--#head--> marker, so every page carries the same tags.
 app.get(['/', '/*.html'], (req, res, next) => {
   const file = req.path === '/' ? 'index.html' : req.path.slice(1);
