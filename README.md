@@ -110,17 +110,7 @@ Check `/leads.html` to see whether each lead synced, was skipped, or hit an erro
 * `GET  /api/leads`: captured leads + HubSpot sync status (test only)
 * `GET  /api/catalog`, `GET /api/health`
 
-## ConsentIQ integration
+## Next (ConsentIQ)
 
-| Where | ConsentIQ method | What happens |
-|---|---|---|
-| Every page | Cookie banner (`blocker.js`, property key `1a4bca7c-…`) | Trackers stay blocked until the visitor consents |
-| Callback form (`/`) and Open account (`/open-account.html`) | Embed (`embed.js`, consent point `368ba711-…`) | The privacy notice and consent statements render inside the form. On submit the site calls `consentiq.capture({ email })` first; the lead is saved and sent to HubSpot **only if** consent is recorded |
-| Dashboard "Manage my consent" | Popup (`consent-modal.js`) with the customer's email as identifier | Customer reviews or changes their consent |
-| Privacy page | Popup (link trigger) | Opens the hosted notice in a modal |
-
-What `capture()` returned is kept on the lead as a receipt (see the Consent column on `/leads.html`).
-ConsentIQ remains the system of record, and its HubSpot connector syncs consent to the contact.
-
-In ConsentIQ, make sure the property's domain includes `dummy-bank-7gcw.onrender.com`. Otherwise
-the widget won't load and the forms say "The consent form is still loading".
+The forms have a `<!-- ConsentIQ consent capture will go here -->` marker, and each lead has a `consent: null`
+field reserved for the ConsentIQ consent record id.

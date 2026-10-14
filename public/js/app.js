@@ -35,19 +35,8 @@ const DummyBank = (() => {
     return String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   }
 
-  // Records consent through the ConsentIQ Embed widget mounted in #consentiq.
-  // Rejects if the widget hasn't loaded or required consent items are unticked.
-  async function captureConsent(email) {
-    if (!document.getElementById('consentiq')) return null;
-    if (!window.consentiq || typeof window.consentiq.capture !== 'function') {
-      throw new Error('The consent form is still loading. Please try again in a moment.');
-    }
-    return window.consentiq.capture({ email });
-  }
-
-  // Wires a form to POST its fields as JSON. Consent is captured in ConsentIQ
-  // first; the lead is only saved once that succeeds. onSuccess(data) returns
-  // the success message HTML.
+  // Wires a form to POST its fields as JSON. onSuccess(data) returns the
+  // success message HTML.
   function bindForm(form, url, onSuccess) {
     const btn = form.querySelector('button[type=submit]');
     const msg = form.parentElement.querySelector('.message');
@@ -61,15 +50,6 @@ const DummyBank = (() => {
 
       const payload = Object.fromEntries(new FormData(form).entries());
       payload.utm = captureUtm();
-
-      try {
-        payload.consent = await captureConsent(payload.email);
-      } catch (err) {
-        showMessage(msg, 'error', escapeHtml((err && err.message) || 'Please review the consent statements above.'));
-        btn.disabled = false;
-        btn.textContent = label;
-        return;
-      }
 
       try {
         const res = await fetch(url, {

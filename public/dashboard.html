@@ -5,8 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dummy Bank - My Account</title>
   <!--#head-->
-  <!-- ConsentIQ Popup: opens the hosted privacy notice + consent statements in a modal -->
-  <script src="https://consent.dev.iqworks.ai/v1/consent-modal.js" async></script>
   <link rel="stylesheet" href="/style.css" />
 </head>
 <body>
@@ -40,8 +38,7 @@
       <div class="card">
         <h3 style="margin-top:0">Privacy & consent</h3>
         <p class="subtitle">Review or change how Dummy Bank uses your data.</p>
-        <button type="button" id="manage-consent">Manage my consent</button>
-        <div class="message" id="consent-msg"></div>
+        <a class="btn" href="https://consent.dev.iqworks.ai/portal/consent/368ba711-d615-4cd6-b9b2-178066f83474">Manage my consent</a>
       </div>
     </div>
   </main>
@@ -57,18 +54,6 @@
       const rows = { Name: `${account.firstName} ${account.lastName}`, Mobile: account.mobile, Email: account.email, City: account.city, Product: account.product };
       document.getElementById('profile').innerHTML = Object.entries(rows).map(([k, v]) => `<dt>${k}</dt><dd>${e(v)}</dd>`).join('');
     }
-    document.getElementById('manage-consent').addEventListener('click', () => {
-      const msg = document.getElementById('consent-msg');
-      if (!window.ConsentIQ || !ConsentIQ.openConsent) {
-        return DummyBank.showMessage(msg, 'error', 'Consent manager is still loading. Try again in a moment.');
-      }
-      ConsentIQ.openConsent('368ba711-d615-4cd6-b9b2-178066f83474', {
-        identifier: account && account.email,
-        onComplete: () => DummyBank.showMessage(msg, 'success', 'Your consent choices were saved.'),
-        onAlreadyConsented: () => DummyBank.showMessage(msg, 'success', 'Your consent is up to date.'),
-        onError: (r) => DummyBank.showMessage(msg, 'error', 'Could not open the consent manager.'),
-      });
-    });
     document.getElementById('logout').addEventListener('click', () => sessionStorage.removeItem('db_account'));
   </script>
 </body>

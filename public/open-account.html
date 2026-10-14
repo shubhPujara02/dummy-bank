@@ -5,9 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dummy Bank - Open an Account</title>
   <!--#head-->
-  <!-- ConsentIQ Embed: renders the privacy notice + consent statements inside #consentiq -->
-  <script src="https://consent.dev.iqworks.ai/v1/embed.js"
-    data-key="368ba711-d615-4cd6-b9b2-178066f83474" data-mount="#consentiq" async></script>
   <link rel="stylesheet" href="/style.css" />
 </head>
 <body>
@@ -43,7 +40,7 @@
             <input id="mobile" name="mobile" type="tel" maxlength="10" placeholder="10-digit mobile" required />
             <div class="hint">You'll use this to log in.</div>
           </div>
-          <div class="field"><label for="email">Email ID</label><input id="email" name="email" type="email" required data-consentiq-identifier-input /></div>
+          <div class="field"><label for="email">Email ID</label><input id="email" name="email" type="email" required /></div>
         </div>
         <div class="row">
           <div class="field"><label for="city">City</label><input id="city" name="city" placeholder="e.g. Ahmedabad" required /></div>
@@ -54,8 +51,7 @@
           <label for="incomeBand">Monthly income</label>
           <select id="incomeBand" name="incomeBand" data-catalog="incomeBands" required></select>
         </div>
-        <div id="consentiq" class="consent-box"></div>
-          <p class="hint">Your consent is recorded by ConsentIQ. Read our <a href="/privacy.html">privacy notice</a>.</p>
+        <!-- ConsentIQ consent capture will go here (intentionally not added yet). -->
         <button class="btn-block" type="submit">Create Account</button>
       </form>
 

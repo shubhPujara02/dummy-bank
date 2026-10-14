@@ -155,8 +155,6 @@ input, select {
 }
 input:focus, select:focus { border-color: var(--blue); }
 .hint { font-size: 12px; color: var(--muted); margin-top: 4px; }
-.consent-box { margin: 6px 0 4px; }
-.consent-box:empty::before { content: "Loading consent options…"; font-size: 13px; color: var(--muted); }
 
 .message {
   margin-top: 16px;
