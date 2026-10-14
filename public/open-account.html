@@ -50,7 +50,6 @@
           <label for="incomeBand">Monthly income</label>
           <select id="incomeBand" name="incomeBand" data-catalog="incomeBands" required></select>
         </div>
-        <!-- ConsentIQ consent capture will go here (intentionally not added yet). -->
         <button class="btn-block" type="submit">Create Account</button>
       </form>
 
@@ -63,7 +62,7 @@
   <script>
     DummyBank.bindForm(document.getElementById('signup-form'), '/api/signup', (data) =>
       `Account created! Your customer ID is <strong>${DummyBank.escapeHtml(data.account.customerId)}</strong>.
-       <a href="/login.html">Log in</a> with your mobile number.` + DummyBank.hubspotNote(data.hubspot));
+       <a href="/login.html">Log in</a> with your mobile number.`);
   </script>
 </body>
 </html>

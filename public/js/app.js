@@ -73,14 +73,8 @@ const DummyBank = (() => {
     });
   }
 
-  function hubspotNote(hs) {
-    if (!hs) return '';
-    const text = { synced: 'Synced to HubSpot', skipped: 'HubSpot sync off', error: 'HubSpot sync failed' }[hs.status];
-    return `<div class="hint">[test] ${text}${hs.contactId ? ' · contact ' + escapeHtml(hs.contactId) : ''}</div>`;
-  }
-
   captureUtm();
   document.addEventListener('DOMContentLoaded', fillSelects);
 
-  return { bindForm, escapeHtml, hubspotNote, showMessage };
+  return { bindForm, escapeHtml, showMessage };
 })();

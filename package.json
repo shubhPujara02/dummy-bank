@@ -2,16 +2,14 @@
   "name": "dummy-bank",
   "private": true,
   "version": "2.0.0",
-  "description": "Dummy bank website + HubSpot seed kit for ConsentIQ <-> HubSpot integration testing",
+  "description": "Dummy bank test website",
   "type": "commonjs",
   "main": "server.js",
   "engines": {
     "node": ">=18"
   },
   "scripts": {
-    "start": "node server.js",
-    "generate": "node scripts/generate-leads.js 200",
-    "seed:hubspot": "node scripts/seed-hubspot.js"
+    "start": "node server.js"
   },
   "dependencies": {
     "express": "^4.19.2"

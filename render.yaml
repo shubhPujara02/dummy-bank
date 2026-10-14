@@ -6,6 +6,3 @@ services:
     buildCommand: npm install
     startCommand: npm start
     healthCheckPath: /api/health
-    envVars:
-      - key: HUBSPOT_ACCESS_TOKEN
-        sync: false

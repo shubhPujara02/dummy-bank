@@ -21,11 +21,11 @@
 
   <main class="container" style="margin-top:32px">
     <h1>Captured leads</h1>
-    <p class="subtitle" id="status">Test view: every lead this site captured, and whether it reached HubSpot.</p>
+    <p class="subtitle" id="status">Test view: every lead this site captured.</p>
     <div class="card table-wrap" style="padding:0">
       <table>
         <thead>
-          <tr><th>When</th><th>Name</th><th>Email</th><th>Mobile</th><th>Product</th><th>Channel</th><th>UTM source</th><th>HubSpot</th><th>Consent</th></tr>
+          <tr><th>When</th><th>Name</th><th>Email</th><th>Mobile</th><th>Product</th><th>Channel</th><th>UTM source</th></tr>
         </thead>
         <tbody id="rows"><tr><td colspan="9">Loading…</td></tr></tbody>
       </table>
@@ -34,10 +34,8 @@
 
   <script src="/js/app.js"></script>
   <script>
-    fetch('/api/leads').then((r) => r.json()).then(({ hubspotConfigured, leads }) => {
+    fetch('/api/leads').then((r) => r.json()).then(({ leads }) => {
       const e = DummyBank.escapeHtml;
-      document.getElementById('status').textContent +=
-        hubspotConfigured ? ' HubSpot sync is ON.' : ' HubSpot sync is OFF (set HUBSPOT_ACCESS_TOKEN).';
       document.getElementById('rows').innerHTML = leads.length ? leads.map((l) => `
         <tr>
           <td>${e(new Date(l.createdAt).toLocaleString())}</td>
@@ -47,8 +45,6 @@
           <td>${e(l.product)}</td>
           <td>${e(l.channel)}</td>
           <td>${e(l.utm?.source || '—')}</td>
-          <td><span class="pill ${e(l.hubspot?.status)}" title="${e(l.hubspot?.reason || '')}">${e(l.hubspot?.status || '—')}</span></td>
-          <td>${l.consent ? e(l.consent) : '<span class="pill skipped">not captured</span>'}</td>
         </tr>`).join('') : '<tr><td colspan="9">No leads yet.</td></tr>';
     });
   </script>

@@ -5,7 +5,6 @@ const path = require('path');
 
 const catalog = require('./lib/catalog');
 const store = require('./lib/store');
-const hubspot = require('./lib/hubspot');
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -63,41 +62,6 @@ function pick(body) {
   };
 }
 
-// Map a Dummy Bank lead to HubSpot contact properties.
-function toHubSpot(lead) {
-  return {
-    email: lead.email,
-    firstname: lead.firstName,
-    lastname: lead.lastName,
-    mobilephone: `+91${lead.mobile}`,
-    city: lead.city || undefined,
-    country: 'India',
-    lifecyclestage: lead.customerId ? 'customer' : 'lead',
-    hs_lead_status: 'NEW',
-    db_product_interest: lead.product,
-    db_income_band: lead.incomeBand || undefined,
-    db_lead_channel: lead.channel,
-    db_kyc_status: lead.customerId ? 'not_started' : undefined,
-    db_preferred_language: lead.language,
-    db_customer_id: lead.customerId || undefined,
-  };
-}
-
-// Pushes the lead to HubSpot if a token is configured. Never fails the request:
-// the outcome is recorded on the lead so it shows up on /leads.html.
-async function syncLead(lead) {
-  if (!hubspot.isConfigured()) {
-    return store.updateLead(lead.id, { hubspot: { status: 'skipped', reason: 'HUBSPOT_ACCESS_TOKEN not set' } });
-  }
-  try {
-    const result = await hubspot.upsertContact(toHubSpot(lead));
-    return store.updateLead(lead.id, { hubspot: { status: 'synced', contactId: result?.id, at: new Date().toISOString() } });
-  } catch (err) {
-    console.error(err.message);
-    return store.updateLead(lead.id, { hubspot: { status: 'error', reason: err.message } });
-  }
-}
-
 function newLead(fields, channel, customerId) {
   return {
     id: crypto.randomUUID(),
@@ -105,9 +69,6 @@ function newLead(fields, channel, customerId) {
     channel,
     customerId: customerId || null,
     createdAt: new Date().toISOString(),
-    // Placeholder: the ConsentIQ consent record id will be attached here once
-    // consent capture is wired in.
-    consent: null,
   };
 }
 
@@ -117,7 +78,7 @@ app.get('/api/catalog', (req, res) => {
 });
 
 app.get('/api/health', (req, res) => {
-  res.json({ ok: true, hubspotConfigured: hubspot.isConfigured() });
+  res.json({ ok: true });
 });
 
 app.post('/api/signup', async (req, res) => {
@@ -131,9 +92,9 @@ app.post('/api/signup', async (req, res) => {
 
   const customerId = 'DB' + String(crypto.randomInt(0, 1e8)).padStart(8, '0');
   const account = store.addAccount({ customerId, ...fields, createdAt: new Date().toISOString() });
-  const lead = await syncLead(store.addLead(newLead(fields, 'website_signup', customerId)));
+  const lead = store.addLead(newLead(fields, 'website_signup', customerId));
 
-  res.status(201).json({ message: 'account created', account, hubspot: lead.hubspot });
+  res.status(201).json({ message: 'account created', account });
 });
 
 app.post('/api/callback', async (req, res) => {
@@ -141,8 +102,8 @@ app.post('/api/callback', async (req, res) => {
   const errors = validateLead(fields, { requireAccountFields: false });
   if (errors.length) return res.status(400).json({ error: errors.join(', ') });
 
-  const lead = await syncLead(store.addLead(newLead(fields, 'website_callback')));
-  res.status(201).json({ message: 'callback requested', leadId: lead.id, hubspot: lead.hubspot });
+  const lead = store.addLead(newLead(fields, 'website_callback'));
+  res.status(201).json({ message: 'callback requested', leadId: lead.id });
 });
 
 app.post('/api/login', (req, res) => {
@@ -155,12 +116,11 @@ app.post('/api/login', (req, res) => {
   res.json({ message: 'login success', account });
 });
 
-// Test-only: lets you see what the site captured and whether it reached HubSpot.
+// Test-only: lets you see what the site captured.
 app.get('/api/leads', (req, res) => {
-  res.json({ hubspotConfigured: hubspot.isConfigured(), leads: store.listLeads().slice().reverse() });
+  res.json({ leads: store.listLeads().slice().reverse() });
 });
 
 app.listen(PORT, () => {
   console.log(`Dummy Bank running at http://localhost:${PORT}`);
-  console.log(`HubSpot sync: ${hubspot.isConfigured() ? 'ON' : 'OFF (set HUBSPOT_ACCESS_TOKEN to enable)'}`);
 });
